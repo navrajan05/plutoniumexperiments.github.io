@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Plutonium Files — Billings Hospital, 1945 | The Chicago Maroon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Georgia', 'Times New Roman', serif;
+  line-height: 1.78;
+  overflow-x: hidden;
+}
+
+/* ── TOKENS ── */
+:root {
+  --bg:        #ffffff;
+  --surface:   #f5f2ee;
+  --surface2:  #ebe7e1;
+  --border:    #d4cec7;
+  --muted:     #888880;
+  --text:      #1a1a18;
+  --white:     #1a1a18;   /* repurposed: high-contrast text on light bg */
+  --accent:    #800000;   /* Chicago Maroon */
+  --dark-accent: #4d0000;
+  --danger:    #9b0000;
+  --warn:      #b56800;
+  --safe:      #256b3a;
+  --mono: 'Courier New', Courier, monospace;
+}
+
+/* ── PROGRESS BAR ── */
+#progress {
+  position: fixed; top: 0; left: 0;
+  height: 2px; width: 0%;
+  background: var(--accent);
+  z-index: 1000;
+  transition: width 0.08s linear;
+}
+
+/* ── SECTION LABEL ── */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.4rem;
+}
+
+/* ── TYPOGRAPHY ── */
+h1 {
+  font-size: clamp(2.9rem, 3.5vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--white);
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+  color: var(--white);
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+p { font-size: clamp(0.95rem, 1.3vw, 1.08rem); max-width: 62ch; }
+strong { color: inherit; font-weight: 700; }
+em { color: var(--text); }
+a, a:hover, a:active, a:visited, a:focus { color: var(--accent); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 8vh 8vw 10vh;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--accent);
+  background: #0d0d0d;
+  color: #f0ede8;
+}
+#hero h1 { color: #f0ede8; }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 60%, rgba(128,0,0,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: up 0.9s 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+#hero h1 {
+  opacity: 0;
+  animation: up 1s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-sub {
+  margin-top: 2rem;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: #888;
+  max-width: 52ch;
+  line-height: 1.65;
+  opacity: 0;
+  animation: up 1s 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-stamp {
+  margin-top: 3.5rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeIn 1s 1.4s forwards;
+}
+.hero-byline {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  opacity: 0;
+  animation: fadeIn 1s 1.1s forwards;
+}
+.hero-byline-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.hero-byline-pub {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.04em;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 0; right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 1s 2s forwards;
+}
+.scroll-cue .scroll-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  animation: bounce 1.6s 2.5s ease-in-out infinite;
+}
+.scroll-cue .scroll-arrow i {
+  display: block;
+  font-style: normal;
+  font-size: 1.1rem;
+  line-height: 0.65;
+  color: rgba(240,237,232,0.55);
+  transform: rotate(90deg);
+}
+.scroll-label {
+  font-family: var(--mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240,237,232,0.35);
+  margin-top: 0.65rem;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
+
+/* ── CHAPTER ── */
+.chapter-wrap {
+  padding: 10vh 8vw;
+  border-bottom: 1px solid var(--border);
+}
+.chapter-body {
+  max-width: 660px;
+  margin: 0 auto;
+}
+.chapter-body p + p { margin-top: 1.6rem; }
+.pull-quote {
+  border-left: 3px solid var(--accent);
+  padding: 1.1rem 1.8rem;
+  margin: 2.8rem 0;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--white);
+  font-style: italic;
+}
+.pull-quote cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-top: 0.8rem;
+}
+
+/* ── SCROLLY CONTAINER ── */
+.scrolly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 350vh;
+  border-bottom: 1px solid var(--border);
+}
+.scrolly-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+.scrolly-steps { display: flex; flex-direction: column; }
+.scrolly-step {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 5rem 8rem 4rem;
+  opacity: 0.3;
+  transition: opacity 0.6s ease;
+}
+.scrolly-step.active {
+  opacity: 1;
+  background: #fff;
+  box-shadow: 0 0 2em #d8d2ca;
+  border-left: 3px solid var(--accent);
+  margin: 0 2rem 0 0;
+  padding: 6rem 4rem;
+  border-radius: 1px;
+}
+.scrolly-step h2 { margin-bottom: 1.4rem; }
+.scrolly-step p + p { margin-top: 1.2rem; }
+
+/* dose highlights — sync colour with active dot matrix state */
+.dh { transition: color 0.45s ease, text-shadow 0.45s ease; font-weight: 600; }
+.scrolly-step.active .dh-safe {
+  color: var(--safe);
+  text-shadow: 0 0 18px rgba(60,179,113,0.35);
+}
+.scrolly-step.active .dh-warn {
+  color: var(--warn);
+  text-shadow: 0 0 18px rgba(244,165,53,0.35);
+}
+.scrolly-step.active .dh-danger {
+  color: var(--danger);
+  text-shadow: 0 0 18px rgba(230,57,70,0.35);
+}
+
+/* ── DOT MATRIX VIZ ── */
+#dot-viz { width: 100%; max-width: 420px; }
+
+.dv-header { margin-bottom: 1.2rem; }
+.dv-unit {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+}
+.dv-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  min-height: 2.8rem;
+}
+.dv-label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  line-height: 1.5;
+  transition: color 0.4s ease;
+}
+.dv-value {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: bold;
+  color: var(--white);
+  text-align: right;
+  line-height: 1.5;
+  transition: color 0.4s ease;
+}
+
+#dot-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  width: 100%;
+  min-height: 200px;
+  align-content: flex-start;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.13);
+  flex-shrink: 0;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.dot.d-safe {
+  background: var(--safe);
+  border-color: var(--safe);
+  box-shadow: 0 0 7px rgba(60,179,113,0.7);
+}
+.dot.d-warn {
+  background: var(--warn);
+  border-color: var(--warn);
+  box-shadow: 0 0 4px rgba(244,165,53,0.45);
+}
+.dot.d-danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  box-shadow: 0 0 3px rgba(230,57,70,0.4);
+}
+
+.dv-mult {
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.dv-mult-n {
+  font-family: var(--mono);
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  font-weight: bold;
+  line-height: 1;
+  transition: color 0.5s ease;
+}
+.dv-mult-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ── PATIENT CARDS ── */
+.cards-section {
+  padding: 10vh 8vw;
+  border-bottom: 1px solid var(--border);
+}
+.cards-intro { max-width: 660px; margin: 0 auto 3.5rem; }
+.cards-intro h2 { margin-bottom: 1.2rem; }
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.patient-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.patient-card.visible { opacity: 1; transform: translateY(0); }
+.patient-card:nth-child(2) { transition-delay: 0.18s; }
+.patient-card:nth-child(3) { transition-delay: 0.36s; }
+.patient-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--border);
+}
+.patient-card.chi1::before { background: var(--warn); }
+.patient-card.chi2::before { background: var(--danger); }
+.patient-card.chi3::before { background: var(--danger); opacity: 0.5; }
+
+.card-id {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 0.45rem 0;
+  font-size: 0.82rem;
+}
+.card-row .key { color: var(--muted); }
+.card-row .val { font-family: var(--mono); font-size: 0.8rem; }
+.card-row .val.danger { color: var(--danger); }
+.card-row .val.warn { color: var(--warn); }
+.card-note {
+  margin-top: 1.2rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.55;
+  font-style: italic;
+}
+.redacted-block {
+  display: inline-block;
+  background: #666;
+  color: transparent;
+  border-radius: 1px;
+  user-select: none;
+  letter-spacing: 0;
+  min-width: 90px;
+  font-size: 0.5rem;
+}
+
+/* ── STAT GRID ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 4rem auto 0;
+  max-width: 1000px;
+}
+.stat-cell {
+  background: var(--surface);
+  padding: 2rem 1.5rem;
+}
+.stat-num {
+  font-family: var(--mono);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: bold;
+  line-height: 1;
+  display: block;
+}
+.stat-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: 0.6rem;
+}
+
+/* ── BREACH SECTION ── */
+.breach-section {
+  padding: 10vh 8vw;
+  border-bottom: 1px solid var(--border);
+}
+.breach-body { max-width: 660px; margin: 0 auto; }
+.breach-body p + p { margin-top: 1.6rem; }
+.breach-item {
+  border-left: 3px solid var(--border);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+  transition: border-color 0.4s ease;
+}
+.breach-item.visible { border-color: var(--danger); }
+.breach-num {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: 0.6rem;
+}
+.breach-item h3 { color: var(--white); font-size: 1rem; letter-spacing: 0; text-transform: none; margin-bottom: 0.8rem; }
+.breach-item p { font-size: 0.92rem; color: var(--text); }
+
+/* ── CONSENT VIZ ── */
+.consent-viz {
+  max-width: 660px;
+  margin: 3.5rem auto 0;
+}
+.consent-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 1.2rem 0;
+}
+.cdot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  transition: all 0.3s ease;
+}
+.cdot.no  { background: rgba(230,57,70,0.12); border-color: rgba(230,57,70,0.3); }
+.cdot.yes { background: rgba(60,179,113,0.12); border-color: rgba(60,179,113,0.4); }
+.consent-legend {
+  display: flex;
+  gap: 2rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.consent-legend span { display: flex; align-items: center; gap: 0.5rem; }
+.leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+.leg-dot.no  { background: var(--danger); opacity: 0.6; }
+.leg-dot.yes { background: var(--safe); opacity: 0.7; }
+
+/* ── TIMELINE SECTION ── */
+.timeline-section {
+  padding: 10vh 8vw 5vh;
+  border-bottom: 1px solid var(--border);
+}
+.timeline-header {
+  max-width: 660px;
+  margin: 0 auto 3.5rem;
+}
+.timeline-header h2 { margin-bottom: 1.6rem; }
+.chapter-body h2    { margin-bottom: 1.6rem; }
+.breach-body h2     { margin-bottom: 1.6rem; }
+.ch2b-text h2       { margin-bottom: 1.6rem; }
+
+/* silence counter */
+#h2-counter {
+  transition: color 0.75s ease-out, text-shadow 0.75s ease-out;
+}
+#h2-counter.counting {
+  color: var(--danger);
+  text-shadow:
+    0 0 12px rgba(230,57,70,1),
+    0 0 30px rgba(230,57,70,0.7),
+    0 0 60px rgba(230,57,70,0.4),
+    0 0 100px rgba(230,57,70,0.2);
+}
+
+/* ── VERTICAL TIMELINE ── */
+.tl-list-section {
+  border-bottom: 1px solid var(--border);
+  padding: 3vh 8vw 8vh;
+}
+.tl-list {
+  position: relative;
+  max-width: 660px;
+  margin: 0 auto;
+}
+/* vertical spine through all dots */
+.tl-list::before {
+  content: '';
+  position: absolute;
+  /* center of dot column: year(5rem) + gap(1.5rem) + half-dot-col(0.75rem) */
+  left: 7.25rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.tl-item {
+  display: grid;
+  grid-template-columns: 5rem 1.5rem 1fr;
+  column-gap: 1.5rem;
+  padding: 2.2rem 0;
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+.tl-item + .tl-item { border-top: 1px solid var(--border); }
+.tl-item.visible { opacity: 1; }
+.tl-year {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-align: right;
+  padding-top: 0.1rem;
+  line-height: 1.4;
+}
+.tl-item.harm   .tl-year { color: var(--danger); }
+.tl-item.expose .tl-year { color: var(--warn); }
+.tl-item.justice .tl-year { color: var(--safe); }
+.tl-item.unknown .tl-year { color: var(--muted); }
+.tl-node {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.1rem;
+  position: relative;
+  z-index: 1;
+}
+.tl-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  transition: border-color 0.4s ease 0.2s, box-shadow 0.4s ease 0.2s;
+}
+.tl-item.visible       .tl-dot { border-color: var(--accent); }
+.tl-item.harm.visible  .tl-dot { border-color: var(--danger); box-shadow: 0 0 10px rgba(230,57,70,0.35); }
+.tl-item.cover.visible .tl-dot { border-color: var(--muted); }
+.tl-item.expose.visible .tl-dot { border-color: var(--warn); box-shadow: 0 0 10px rgba(244,165,53,0.3); }
+.tl-item.justice.visible .tl-dot { border-color: var(--safe); box-shadow: 0 0 10px rgba(60,179,113,0.3); }
+.tl-item.unknown.visible .tl-dot { border-color: var(--muted); border-style: dashed; }
+.tl-body { min-width: 0; }
+.tl-text {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+.tl-sub {
+  font-size: 0.76rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 0.45rem;
+}
+
+/* ── INSTITUTION GRID ── */
+.inst-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 2.8rem 0;
+}
+.inst-cell {
+  background: var(--surface);
+  padding: 1.5rem;
+}
+.inst-name {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.inst-count {
+  font-family: var(--mono);
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--white);
+  line-height: 1;
+}
+.inst-detail {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+.inst-cell.focus { background: var(--surface2); }
+.inst-cell.focus .inst-count { color: var(--accent); }
+
+/* ── SITE FILE EXPLORER ── */
+.ch2b-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 620px) 390px;
+  gap: 5rem;
+  align-items: start;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.ch2b-text p + p { margin-top: 1.6rem; }
+@media (max-width: 960px) {
+  .ch2b-inner { grid-template-columns: 1fr; }
+  .file-explorer { position: static !important; }
+}
+.file-explorer {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+}
+.folder-tabs {
+  display: flex;
+  gap: 3px;
+}
+.folder-tab {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.42rem 0.9rem;
+  cursor: pointer;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+  user-select: none;
+  line-height: 1.4;
+}
+.folder-tab.active {
+  background: var(--surface);
+  color: var(--white);
+  position: relative;
+  z-index: 2;
+  margin-bottom: -1px;
+  padding-bottom: calc(0.42rem + 1px);
+}
+.folder-tab:hover:not(.active) { color: var(--white); }
+.deck-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.deck-header {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.65rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.deck-inst-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deck-counter-lbl { white-space: nowrap; flex-shrink: 0; }
+.deck-cards { position: relative; min-height: 320px; }
+.site-card {
+  padding: 1.4rem;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.site-card.active {
+  opacity: 1;
+  pointer-events: all;
+  position: relative;
+}
+.site-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--border);
+}
+.site-card.or::before   { background: var(--warn); }
+.site-card.ucsf::before { background: var(--danger); }
+.site-card.roch::before { background: var(--accent); }
+.deck-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1.1rem;
+  border-top: 1px solid var(--border);
+}
+.deck-dots { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.deck-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--border); cursor: pointer;
+  transition: background 0.2s; border: none; padding: 0; flex-shrink: 0;
+}
+.deck-dot.active { background: var(--accent); }
+.deck-arrows { display: flex; gap: 0.4rem; }
+.deck-arrow {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; font-size: 1rem; line-height: 1;
+  transition: color 0.2s, border-color 0.2s;
+}
+.deck-arrow:hover:not(:disabled) { color: var(--white); border-color: var(--accent); }
+.deck-arrow:disabled { opacity: 0.25; cursor: default; }
+
+/* ── MEMO BLOCKS ── */
+.memo-block {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--muted);
+  margin: 2.5rem 0;
+  padding: 1.8rem 2rem;
+  background: var(--surface);
+  transition: border-left-color 0.4s ease;
+}
+.memo-block.visible { border-left-color: var(--danger); }
+.memo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.1rem;
+  gap: 1rem;
+}
+.memo-from {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--danger);
+}
+.memo-date {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.memo-quote {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--white);
+  font-style: italic;
+  border: none;
+  padding: 0;
+  margin: 0 0 1.1rem;
+  quotes: "\201C" "\201D";
+}
+.memo-quote::before { content: open-quote; }
+.memo-quote::after  { content: close-quote; }
+.memo-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+/* ── EPILOGUE ── */
+/* ── EPILOGUE STATEMENT SIDESCROLL ── */
+.epilogue-scroll-outer {
+  position: relative;
+  height: 700vh;
+  border-bottom: 1px solid var(--border);
+}
+.epilogue-scroll-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+.ucs-header {
+  padding: 2rem 3rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.ucs-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.ucs-track-wrap {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+.ucs-track {
+  display: flex;
+  width: 700vw;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.ucs-panel {
+  width: 100vw;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem 8vw 2rem;
+}
+.ucs-panel-label {
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+}
+.ucs-statement {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  line-height: 1.75;
+  color: rgba(26,26,24,0.18);
+  max-width: 72ch;
+}
+.ucs-hi {
+  color: var(--text);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1px;
+}
+.ucs-callout {
+  margin-top: 3rem;
+  margin-bottom: 2.5rem;
+  max-width: 56ch;
+  font-size: clamp(0.82rem, 1.15vw, 0.95rem);
+  line-height: 1.75;
+  color: var(--muted);
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--accent);
+}
+.ucs-close-text {
+  margin-top: 2.2rem;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.95rem, 1.6vw, 1.3rem);
+  line-height: 1.75;
+  color: var(--text);
+  max-width: 48ch;
+}
+.ucs-close-text strong { color: var(--accent); }
+.ucs-nav-hint {
+  margin-top: 2.5rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  max-width: none;
+}
+.ucs-nav {
+  display: flex;
+  gap: 0.55rem;
+  padding: 1rem 3rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ucs-nav-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.3s, transform 0.3s;
+}
+.ucs-nav-dot.active {
+  background: var(--accent);
+  transform: scale(1.5);
+}
+
+.unknown-files {
+  margin: 3.5rem 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 2.4;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+  background: var(--surface);
+}
+.unknown-files .uf-label { color: var(--text); font-weight: bold; }
+.unknown-files .uf-redact {
+  display: inline-block;
+  background: #555;
+  color: transparent;
+  border-radius: 1px;
+  user-select: none;
+  letter-spacing: 0;
+  font-size: 0.4rem;
+  vertical-align: middle;
+  padding: 0 2px;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 5rem 8vw;
+  border-top: 1px solid var(--border);
+}
+.footer-inner { max-width: 660px; margin: 0 auto; }
+.sources-list { margin-top: 1.5rem; }
+.source {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  line-height: 1.55;
+}
+.source a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s;
+}
+.source a:hover { color: var(--accent); border-color: var(--accent); }
+.footer-stamp {
+  margin-top: 3rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ── CHICAGO MAROON MASTHEAD ── */
+.cm-masthead {
+  background: var(--dark-accent);
+  padding: 0.65rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 2px solid var(--accent);
+}
+.cm-logo-link { text-decoration: none; }
+.cm-wordmark {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+.cm-nav a {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.cm-nav a:hover { color: #fff; }
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.85s ease, transform 0.85s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.12s; }
+.reveal-d2 { transition-delay: 0.24s; }
+.reveal-d3 { transition-delay: 0.36s; }
+
+/* ── DIVIDER ── */
+hr.div { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* ── KEYFRAMES ── */
+@keyframes up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes scan {
+  from { left: -100%; } to { left: 100%; }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .scrolly { grid-template-columns: 1fr; }
+  .scrolly-sticky { display: none; }
+  .scrolly-step { padding: 4rem 2rem; opacity: 1; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+
+}
+
+/* ── CAMPUS MAP ── */
+#campus-map {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── BILLINGS STICKY SCROLL ── */
+.billings-scroll {
+  display: block;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.billings-map-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--surface);
+  border: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  z-index: 0;
+  transition: opacity 0.65s ease;
+  will-change: opacity;
+}
+.billings-map-panel.exit {
+  opacity: 0;
+}
+/* eyebrow + caption sit inside the sticky panel but are hidden in overlay mode */
+.billings-map-eyebrow,
+.billings-map-panel .campus-map-caption { display: none; }
+.billings-steps {
+  position: relative;
+  z-index: 1;
+  margin-top: -100vh;
+  padding-top: 55vh;   /* map visible before first step */
+  padding-bottom: 20vh;
+  display: flex;
+  flex-direction: column;
+  gap: 18vh;
+}
+.billings-step {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem max(4rem, 12vw);
+  opacity: 1;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(245,242,238,0.85) 8%,
+    rgba(245,242,238,1) 16%,
+    rgba(245,242,238,1) 78%,
+    rgba(245,242,238,0.85) 90%,
+    transparent 100%
+  );
+}
+.billings-step:last-child { min-height: 60vh; }
+.billings-step h2 { margin-bottom: 1.6rem; }
+.billings-step p + p { margin-top: 1.6rem; }
+.billings-step p { max-width: 52ch; }
+.campus-map-caption {
+  padding: 0.75rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.map-highlight {
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1px;
+  background: none;
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header class="cm-masthead">
+  <a href="https://chicagomaroon.com" class="cm-logo-link">
+    <span class="cm-wordmark">The Chicago Maroon</span>
+  </a>
+  <nav class="cm-nav">
+    <a href="https://chicagomaroon.com/category/grey-city/">Grey City</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-kicker">May 28, 2026</div>
+  <h1>UChicago Researchers Secretly Injected Patients With Plutonium. The University Still Hasn't Apologized.</h1>
+  <p class="hero-sub">
+As part of a series of government experiments, a University of Chicago hospital injected terminally ill patients with lethal amounts of plutonium – then covered it up for 50 years. The university has still admitted no wrongdoing.</p>
+  <div class="hero-byline">
+    <span class="hero-byline-label">Report & Design by Navaneeth Rajan</span>
+    <span class="hero-byline-pub"></span>
+  </div>
+
+  <div class="scroll-cue">
+    <span class="scroll-arrow"><i>❯❯</i><i></i></span>
+    <span class="scroll-label">Scroll to read</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER I: THE FEAR
+════════════════════════════════════════ -->
+
+<!-- Chapter I: full sticky scroll with map -->
+<div class="billings-scroll" id="billings-scroll">
+
+  <div class="billings-map-panel" id="billings-map-panel">
+    <div class="billings-map-eyebrow">University of Chicago &nbsp;·&nbsp; Hyde Park &nbsp;·&nbsp; 1942–1945</div>
+    <img id="campus-map" src="map.jpg" alt="University of Chicago campus map showing Chicago Pile-1, Jones Laboratory, and Billings Hospital">
+    <p class="campus-map-caption">All three sites are within 600 metres of each other on the same campus</p>
+  </div>
+
+  <div class="billings-steps">
+
+
+    <div class="billings-step active" data-bstep="1">
+      <div class="eyebrow">Chapter I &nbsp;—&nbsp; The Motive</div>
+      <h2>A New Element</h2>
+    <p> On December 2, 1942, a team of researchers at UChicago led by Enrico Fermi, achieved the first nuclear chain reaction, in a squash court at the site of the modern-day Regenstein library. <mark class="map-highlight">Chicago Pile-1</mark> was a crude graphite-and-uranium reactor; it had no cooling or shielding, outputted only half a watt of power, and was a radiation hazard to everyone present. 
+    </p>
+    <p>
+      But the goal was never power generation. Unlike uranium, plutonium cannot be found in nature in any meaningful quantity – it must be manufactured. Until then, weapons-grade plutonium had only ever been produced in miniscule amounts by cyclotrons: the earliest particle accelerators. Fermi and the members of Chicago's Metallurgical Laboratory – the "Met Lab" – were tasked with evaluating the feasability of using nuclear reactors to recreate the underlying nuclear reactions en masse, producing industrial quantities of plutonium.
+    </p>
+    </div>
+
+    <div class="billings-step" data-bstep="2">
+  <p> Wartime had accelerated research on plutonium to exceptional rates. The element had been discovered less than two years before CP-1 criticality, by physicist Glenn Seaborg at UC Berkeley. It was his team that, in August of 1942, isolated and weighed the element for the first time, in Room 405 of UChicago's <mark class="map-highlight">Jones Laboratory</mark>.
+
+  <p>
+  By early 1943, the U.S. federal government had authorized the purchase of a site in Hanford, Washington for the construction of the world's first plutonium production reactor. Across the country, researchers and site workers were handling the element daily, frequently with inadequate protection. By 1944, there had been several inhalation incidents, and, at Los Alamos, even a case of ingestion. But the biological effects of internal plutonium exposure remained almost entirely unknown.</p>
+  <p>
+  The Manhattan Project needed answers, and quickly. If a particle of plutonium was breathed in or swallowed, what would happen? How much would the body retain? How quickly would it clear? Without that data, there would be no defensible way to set safety limits for the tens of thousands of workers and researchers building the bomb.</p>
+    </div>
+
+    <div class="billings-step" data-bstep="3">
+      <p>Put in comparison with the groundbreaking research conducted by Seaborg and Fermi, the solution approved by the Manhattan Project Medical Division was remarkably primitive: inject hospital patients with plutonium and measure how much they excreted. Three of the patients were drawn from the wards of <mark class="map-highlight">Billings Hospital</mark>, a two-minute walk from the center of the main quadrangle.</p>
+      <p>These patients — designated CHI-1, CHI-2, and CHI-3 — were injected between 1945 and 1946. None were told what was in the syringe. All had been admitted for unrelated conditions. Their excretions were collected and sent to Los Alamos for analysis.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Part C: continuation -->
+
+
+<!-- ═══════════════════════════════════════
+     SCROLLY SECTION 1: DOSE COMPARISON
+════════════════════════════════════════ -->
+<div class="scrolly" id="scrolly1">
+
+  <!-- sticky visualization -->
+  <div class="scrolly-sticky">
+    <div id="dot-viz">
+      <div class="dv-header">
+        <div class="dv-unit">Each dot = 0.1 μg of plutonium</div>
+        <div class="dv-status">
+          <span class="dv-label" id="dv-label">Safe limit (1949 standard)</span>
+          <span class="dv-value" id="dv-value">0.1 μg &nbsp;·&nbsp; 1 dot</span>
+        </div>
+      </div>
+      <div id="dot-field"></div>
+      <div class="dv-mult" id="dv-mult">
+        <span class="dv-mult-n" id="dv-mult-n">1×</span>
+        <span class="dv-mult-label" id="dv-mult-label">the safe limit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- scroll steps -->
+  <div class="scrolly-steps">
+
+    <div class="scrolly-step" data-step="1">
+      <div class="eyebrow">The Safety Limit</div>
+      <h2>Uneducated Guesses</h2>
+      <p>In 1943, the Manhattan Project’s Health Division tentatively set the maximum permissible body burden (MPBB) for plutonium at 5 micrograms. The estimate was loosely extrapolated from radium, a better-studied radioactive heavy metal that, like plutonium, had a tendency to accumulate in the skeleton. By the spring of 1945, it had been discovered that plutonium deposited in parts of the bone more associated with growth, and the MPBB was reduced to a single microgram. Following the 1949 Chalk River Conference, it was slashed even further: to <span class="dh dh-safe">0.1 micrograms</span> — fifty times below the original estimate.</p>
+      <p>That single <span class="dh dh-safe">green dot</span> is the entire maximum MPBB. One tenth of a microgram. This is what the Health Division ultimately concluded a human being could safely carry.</p>
+    </div>
+
+    <div class="scrolly-step" data-step="2">
+      <div class="eyebrow">Patient CHI-1 — April 1945</div>
+      <h2>UChicago's First Injection</h2>
+      <p>The Albert Merritt Billings Hospital was the first hospital to be affilied with UChicago Medicine, situated roughly five hundred yards southwest of the Stagg Field site where CP-1 had gone critical two and a half years earlier. The plutonium injected into its patients was likely produced at Met Lab facilities on the same campus.</p>
+      <p>The first Billings patient, Arthur Hubbard, "CHI-1", was a 68-year-old undergoing treatment for cancers of the lung and chin. He was injected with <span class="dh dh-warn">6.5 micrograms</span> in April 1945. Against even the most permissive 1943 safety limit, this was an overdose. Against the final standard, it was <span class="dh dh-warn">65 times the safe quantity</span> — each <span class="dh dh-warn">orange dot</span> is more plutonium than any worker at the Met Lab or any other facility was permitted to accumulate.</p>
+      <p>He died five months later. The experiment continued.</p>
+    </div>
+
+    <div class="scrolly-step" data-step="3">
+      <div class="eyebrow">Patients CHI-2 &amp; CHI-3 — December 1945</div>
+      <h2>Even More. </h2>
+      <p>Japan had surrendered in August. The Met Lab was winding down its wartime role. But the Health Division's agenda — to establish reliable data on plutonium excretion — remained incomplete. In December 1945, with no military urgency justifying the work and the MPBB now set at a microgram, two more Billings patients received <span class="dh dh-danger">approximately 95 micrograms each</span> – nearly <span class="dh dh-danger">25</span> times the amount of radiation the average person receives over their lifetime.
+      <p>Una Macke, "CHI-2", died 17 days later. CHI-3, approximately 18 years old, left Billings and vanished from the record entirely. He was reported as "lost to follow-up."
+    </div>
+
+    <div class="scrolly-step" data-step="4">
+      <div class="eyebrow">The Calculation</div>
+      <h2>They Were Already Dead</h2>
+      <p>Plutonium accumulates on the surfaces of the bone; over the course of decades, the principal long-term health risk is bone cancer. This much was understood even in 1945, working off the precedent set by the "radium girls." These women, who had licked their brushes as they daubed radioactive paint onto watch dials, had, ten to twenty years later, developed anemia, jaw necrosis, and bone tumors that, for many, proved fatal. </p>
+      <p>To quote an internal 1946 report, "people were selected whose life expectancy was such that they could not be endangered by injections of plutonium." UChicago researchers chose consciously and explicitly to inject terminally ill patients because they would die of their existing conditions before the plutonium could produce a tumor. That way, there would be no delayed suffering. More importantly, there would be no causal link between injection and death, nor any lawsuit linking a Billings Hospital bed to the Manhattan Project researchers working a few buildings away.
+      </p>
+      </div>
+
+  </div>
+</div><!-- /scrolly1 -->
+
+<!-- ═══════════════════════════════════════
+     PATIENT CARDS
+════════════════════════════════════════ -->
+<div class="cards-section" id="cards-section">
+  <div class="cards-intro">
+    <div class="eyebrow reveal">Chapter II &nbsp;—&nbsp; The Subjects</div>
+    <h2 class="reveal">The Chicago Patients</h2>
+    <p class="reveal reveal-d1">What follows is are the contents of the public record regarding the three patients selected for injection at Billings Hospital. The "CHI" prefix in their shared designations stands for Chicago. Eighty years, a presidential apology, and a Pulitzer Prize winning investigation later, no one has been able to attach a name to CHI-3.</p>
+  </div>
+
+  <div class="cards-grid">
+
+    <div class="patient-card chi1">
+      <div class="card-id">&#9632;&nbsp; Case CHI-1 &nbsp;·&nbsp; Classified</div>
+      <div class="card-row"><span class="key">Age</span><span class="val">68</span></div>
+      <div class="card-row"><span class="key">Sex</span><span class="val">Male</span></div>
+      <div class="card-row"><span class="key">Diagnosis</span><span class="val">Mouth &amp; Lung Cancer</span></div>
+      <div class="card-row"><span class="key">Date of injection</span><span class="val">April 26, 1945</span></div>
+      <div class="card-row"><span class="key">Dose administered</span><span class="val warn">6.5 μg</span></div>
+      <div class="card-row"><span class="key">Outcome</span><span class="val">Died ~5 months later</span></div>
+      <div class="card-row"><span class="key">True identity</span><span class="val"><span class="val">Arthur Hubbard</span></span></div>
+    </div>
+
+    <div class="patient-card chi2">
+      <div class="card-id">&#9632;&nbsp; Case CHI-2 &nbsp;·&nbsp; Classified</div>
+      <div class="card-row"><span class="key">Age</span><span class="val">55</span></div>
+      <div class="card-row"><span class="key">Sex</span><span class="val">Female</span></div>
+      <div class="card-row"><span class="key">Diagnosis</span><span class="val">Advanced Breast Cancer</span></div>
+      <div class="card-row"><span class="key">Date of injection</span><span class="val">December 27, 1945</span></div>
+      <div class="card-row"><span class="key">Dose administered</span><span class="val danger">~95 μg</span></div>
+      <div class="card-row"><span class="key">Outcome</span><span class="val">Died 17 days later</span></div>
+      <div class="card-row"><span class="key">True identity</span><span class="val"><span class="val">Una Macke</span></span></div>
+    </div>
+
+    <div class="patient-card chi3">
+      <div class="card-id">&#9632;&nbsp; Case CHI-3 &nbsp;·&nbsp; Classified</div>
+      <div class="card-row"><span class="key">Age</span><span class="val">18</span></div>
+      <div class="card-row"><span class="key">Sex</span><span class="val">Male</span></div>
+      <div class="card-row"><span class="key">Diagnosis</span><span class="val">Hodgkin's Disease</span></div>
+      <div class="card-row"><span class="key">Date of injection</span><span class="val">December 27, 1945</span></div>
+      <div class="card-row"><span class="key">Dose administered</span><span class="val danger">~95 μg</span></div>
+      <div class="card-row"><span class="key">Outcome</span><span class="val"> "Lost to follow-up"</span></div>
+      <div class="card-row"><span class="key">True identity</span><span class="val"><span class="redacted-block">████████████████</span></span></div>
+    </div>
+
+  </div>
+
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     THE BROADER PROGRAM
+════════════════════════════════════════ -->
+<div class="chapter-wrap" id="ch2b" style="background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="ch2b-inner">
+
+    <!-- LEFT: text -->
+    <div class="ch2b-text">
+      <h2 class="reveal">Chicago Was Not the Only Site</h2>
+
+      <p class="reveal">The three Billings Hospital patients were part of a larger program. Between 1945 and 1947, eighteen hospitalized patients at four American institutions received plutonium injections. Many of these sites declined to select terminally ill patients as their experimental subjects – others misdiagnosed patients with years, if not decades, of life left. Across all four cohorts and eighteen patients, no record of consent exists.
+      </p>
+
+      <div class="inst-grid reveal">
+        <div class="inst-cell">
+          <div class="inst-name">Oak Ridge, Tennessee</div>
+          <div class="inst-count">1</div>
+          <div class="inst-detail">The site of the first injection in the program, on April 10, 1945 — two weeks before CHI-1.</div>
+        </div>
+        <div class="inst-cell">
+          <div class="inst-name">University of Rochester</div>
+          <div class="inst-count">11</div>
+          <div class="inst-detail">The single largest cohort, injecting 11 patients.</div>
+        </div>
+        <div class="inst-cell">
+          <div class="inst-name">University of California, S.F.</div>
+          <div class="inst-count">3</div>
+          <div class="inst-detail">The site of the last injection, in July 1947, two years after Emperor Hirohito announced Japan's surrender.</div>
+        </div>
+        <div class="inst-cell focus">
+          <div class="inst-name">University of Chicago</div>
+          <div class="inst-count">3</div>
+          <div class="inst-detail">The site at which the highest doses of plutonium were administered. Also the site at which the only unidentified patient, CHI-3, was injected. </div>
+        </div>
+      </div>
+
+      <p class="reveal">The first injection of the program did not occur at UChicago. Ebb Cade, a 53-year-old Black construction worker was admitted to Oak Ridge Hospital following a car accident. Reports described him as "well developed [and] well nourished," and made explicit note of the fact that he had no history of illness. On April 10, 1945, two weeks after the initial crash, researchers injected him with 4.7 micrograms of plutonium. Five days later, they biopsied Cade's bones and removed fifteen of his teeth for plutonium uptake analysis – purportedly, Cade was suffering from tooth decay, though the medical necessity of the procedure is disputed. Cade was retroactively designated as HP-12 (an abbrevaiation for the sickeningly clinical "human product"). He lived another eight years before dying of heart failure.</p>
+
+      <p class="reveal">At UC San Francisco, "CAL-2" – a four-year-old named Simeon Shaw – was injected with not only plutonium, but also cocktail of yttrium and cerium radioisotopes. Researchers lied to his parents and told them it was an experimental treatment for Shaw's cancer. He died less than a year later. He had been preceded by Albert Stevens, "CAL-1," who was injected with 131,000 nanocuries of plutonium following a misdiagnosis of a benign gastric ulcer as stomach cancer. He lived for 21 years, accumulating 64 Sieverts of radiation, and becoming the most irradiated human in history.</p>
+    </div>
+
+    <!-- RIGHT: file explorer -->
+    <div class="file-explorer reveal">
+      <div class="folder-tabs">
+        <button class="folder-tab active" data-site="or">Oak Ridge</button>
+        <button class="folder-tab" data-site="ucsf">UCSF</button>
+        <button class="folder-tab" data-site="roch">U Rochester</button>
+      </div>
+      <div class="deck-frame">
+        <div class="deck-header">
+          <span class="deck-inst-label" id="deck-label">Oak Ridge Hospital &nbsp;·&nbsp; Tennessee</span>
+          <span class="deck-counter-lbl" id="deck-counter">1 / 1</span>
+        </div>
+        <div class="deck-cards" id="deck-cards">
+
+          <!-- ── OAK RIDGE ── -->
+          <div class="site-card or active" data-site="or">
+            <div class="card-id">&#9632;&nbsp; HP-12 &nbsp;·&nbsp; Oak Ridge Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <!-- ── UCSF ── -->
+
+          <div class="site-card ucsf" data-site="ucsf">
+            <div class="card-id">&#9632;&nbsp; CAL-1 &nbsp;·&nbsp; UC San Francisco</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+
+          <div class="site-card ucsf" data-site="ucsf">
+            <div class="card-id">&#9632;&nbsp; CAL-2 &nbsp;·&nbsp; UC San Francisco</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          
+          <div class="site-card ucsf" data-site="ucsf">
+            <div class="card-id">&#9632;&nbsp; CAL-3 &nbsp;·&nbsp; UC San Francisco</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <!-- ── ROCHESTER ── -->
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-1 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-2 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-3 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-4 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-5 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-6 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-7 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-8 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-9 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-10 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+          <div class="site-card roch" data-site="roch">
+            <div class="card-id">&#9632;&nbsp; HP-11 &nbsp;·&nbsp; Strong Memorial Hospital</div>
+            <div class="card-row"><span class="key">UNDER CONSTRUCTION</span><span class="val"></span></div>
+          </div>
+
+        </div><!-- /deck-cards -->
+        <div class="deck-footer">
+          <div class="deck-dots" id="deck-dots"></div>
+          <div class="deck-arrows">
+            <button class="deck-arrow" id="deck-prev" aria-label="Previous">&#8249;</button>
+            <button class="deck-arrow" id="deck-next" aria-label="Next">&#8250;</button>
+          </div>
+        </div>
+      </div><!-- /deck-frame -->
+    </div><!-- /file-explorer -->
+
+  </div><!-- /ch2b-inner -->
+</div>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER III: CONSENT
+════════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════
+     CHAPTER III-B: THE UCSF DEFENSE
+════════════════════════════════════════ -->
+<div class="breach-section" id="ch3b" style="border-top: 1px solid var(--border);">
+  <div class="breach-body">
+    <div class="eyebrow reveal">Chapter III &nbsp;—&nbsp; The Defense</div>
+    <h2 class="reveal">The Dose Makes the Poison</h2>
+    <p class="reveal reveal-d1">In February 1995, responding to a declassification order issued by Secretary of Energy Hazel O'Leary, the University of California, San Francisco released its own internal review of the plutonium experiments. The report of the UCSF Ad Hoc Fact-Finding Committee on World War II Human Radiation Experiments  concluded that "the amount of plutonium injected into the CAL patients was too small to pose a significant risk of physical harm," arguing that "no UCSF research subject received more than 0.4% of the mass noted to produce a detectable acute effect" in animal studies.
+    </p>
+    <p class="reveal reveal-d2">Strictly speaking, the claim is true. But the defense built upon that premise is both historically fraught and medically irrelevant.</p>
+    <div class="breach-item reveal">
+      <div class="breach-num">The Historical Problem</div>
+      <h3>The Researchers Couldn't Have Known That in 1945</h3>
+      <p>The "acutely toxic dose" that UCSF cites was derived from early LD50 studies on rats: experiments establishing how much plutonium kills half a test population within a month. But what few animal studies existed in April 1945 on the toxicity of plutonium were already widely understood to be unlikely to generalize to humans. The historical record for plutonium safety limits proves this – by 1949, the limit was set at a fiftieth of what it had been when the rat LD50 experiments were first conducted. UCSF's report, was, in effect, citing data that it acknowledges as faulty, in order to defend decisions made in 1945 by researchers who also understood that data was faulty. Nobody knew what an acutely toxic dose looked like, because nobody had done the experiments yet.</p>
+    </div>
+
+    <div class="breach-item reveal">
+      <div class="breach-num">The Biological Problem</div>
+      <h3>Acute Toxicity Is the Wrong Metric Entirely</h3>
+      <p>Acute toxicity, by definition, refers to adverse health effects suffered within two weeks of exposure to a toxin. At microgram-order doses, plutonium does <em>nothing</em> quickly. Its hazard is not acute poisoning — it is radiation-induced osteosarcoma, developing over the span of decades. The underlying biochemical mechanisms were understood by analogy to radium well before the first human injections, and the existing safety limits — the MPBB of 1 microgram, later 0.1 — were set explicitly to mitigate cancer risk, not because anyone expected to kill patients in a month. To defend a dose as safe because it is not <em>acutely</em> toxic is, thus, to answer a question nobody was asking.</p>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TIMELINE: 48 YEARS OF SILENCE
+════════════════════════════════════════ -->
+<div class="timeline-section" id="tl-section">
+  <div class="chapter-body" id="the-memo">
+    <h2 class="reveal">A Different Time</h2>
+
+
+    <p class="reveal reveal-d1"> While the UCSF report does underplay the health risks posed by the injections themselves, it does concede that the experimental design itself was monstruously unethical – describing it as "comparable to research performed in Nazi death camps." This indictment was not a universal one: a report by Los Alamos National Laboratory, published in the same year as UCSF's, defended the procedure, claiming "it was not uncommon in the 1940s for physicians to use patients as subjects in experiments without their knowledge or consent."</p>
+
+    <p class="reveal">Report CH-3607 — titled <em>"The Distribution and Excretion of Plutonium in Two Human Subjects"</em> — was briefly declassified on January 3, 1947. It was reclassified eighty-seven days later, on March 31, 1947. The following is what the record shows about why.
+    </p>
+
+
+    <div class="memo-block reveal">
+      <div class="memo-header">
+        <span class="memo-from">Col. O.G. Haywood</span>
+      </div>
+      <blockquote class="memo-quote">It is desired that no document be released which refers to experiments with humans and might have adverse effects on public opinion or result in legal suits.</blockquote>
+
+    </div>
+
+    <div class="memo-block reveal">
+      <div class="memo-header">
+        <span class="memo-from">C.L. Marshall</span>
+      </div>
+      <blockquote class="memo-quote">This document appears to be the most dangerous since it describes experiments performed on human subjects... the coldly scientific manner in which the results are tabulated and discussed would have a very poor effect on the general public.</blockquote>
+
+    </div>
+
+    <div class="memo-block reveal">
+      <div class="memo-header">
+        <span class="memo-from">J.C. Franklin </span>
+      </div>
+      <blockquote class="memo-quote">Publication of experiments done by Atomic Energy Commission contractors' personnel may frequently be the source of litigation and prejudicial to the proper functioning of the Atomic Energy Commission Insurance Branch.</blockquote>
+
+    </div>
+
+    <div class="memo-block reveal">
+      <div class="memo-header">
+        <span class="memo-from">Dr. R.S. Stone </span>
+      </div>
+      <blockquote class="memo-quote">With regard to the lawsuit part of the program, I think that this could be taken care of readily by the elimination of the initials of the patients... With the initials removed, there will be no means by which the patients can ever connect themselves with the report.</blockquote>
+
+    </div>
+
+      <p class="reveal">The stated rationale for the classification, consistent across every memo in the chain, was the same: not weapons secrets, nor national security, but public outrage and civil liability. Even the researchers knew the work was unconscionable: in 1950, Dr. Joseph Hamilton — who had personally supervised the California injections — wrote that the human radiation experiments carried "a little of the Buchenwald touch." At Buchenwald concentration camp, Nazi doctors infected over a thousand Jewish and homosexual inmates with typhus, gas gangrene, and smallpox, among other diseases. Most met sickening deaths.
+    </p>
+  </div>
+
+</div><!-- /timeline-section -->
+
+
+<div class="tl-list-section">
+
+  <h2 class="reveal" style="max-width:660px; margin: 0 auto 2.5rem;"><span id="h2-counter">48</span> Years of Deliberate Silence</h2>
+
+  <div class="tl-list">
+
+    <div class="tl-item">
+      <div class="tl-year">August 1942</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Glenn Seaborg and his team at the University of Chicago's Jones Laboratory isolate the first weighable sample of plutonium — a fraction of a microgram, barely visible under a microscope.</div>
+        <div class="tl-sub">It is the first time any human being has held the element. Within three years, facilities at Oak Ridge and Hanford will be producing it by the kilogram.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">Dec. 2, 1942</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Chicago Pile-1 achieves the first self-sustaining nuclear chain reaction in history, beneath the west stands of Stagg Field on the University of Chicago campus.</div>
+        <div class="tl-sub">Enrico Fermi's team works in near-total secrecy. The university's administration is not fully informed. The atomic age begins under a football stadium.</div>
+      </div>
+    </div>
+
+    <div class="tl-item harm">
+      <div class="tl-year">April 1945</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">CHI-1 injected at Billings Hospital. The Manhattan Project is three months from its first nuclear test.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">July 16, 1945</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Trinity test. The atomic age begins. The bomb works. The Met Lab's plutonium work is vindicated.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">August 1945</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Atomic bombs are dropped on Hiroshima (August 6) and Nagasaki (August 9). Japan announces surrender on August 15. The war is over.</div>
+        <div class="tl-sub">The Manhattan Project's stated justification — shortening the war — is no longer applicable. The plutonium injection experiments continue regardless. CHI-2 and CHI-3 will be injected four months later.</div>
+      </div>
+    </div>
+
+    <div class="tl-item harm">
+      <div class="tl-year">December 1945</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">CHI-2 and CHI-3 injected with ~95 μg each — 95 times the worker safety limit now in effect. The war has been over for four months.</div>
+        <div class="tl-sub">CHI-2 dies 17 days later. CHI-3 leaves the hospital against medical advice. His whereabouts become permanently unknown.</div>
+      </div>
+    </div>
+
+    <div class="tl-item cover">
+      <div class="tl-year">1947</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">The civilian Atomic Energy Commission takes over from the Army. An internal AEC declassification officer reviews Document "CH-3607" — the UChicago experiment data.</div>
+        <div class="tl-sub">The officer's memo explicitly states that releasing the "coldly scientific" report without proof of patient consent would trigger devastating lawsuits and public backlash. The document is suppressed. The stated rationale is not national security — it is <em>liability</em>.</div>
+      </div>
+    </div>
+
+    <div class="tl-item cover">
+      <div class="tl-year">1953</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">The U.S. Secretary of Defense secretly adopts the Nuremberg Code, requiring voluntary informed consent for all human experimentation.</div>
+        <div class="tl-sub">The adoption is itself classified and not made public for 22 years. The ethical framework exists — under seal.</div>
+      </div>
+    </div>
+
+    <div class="tl-item harm">
+      <div class="tl-year">1957</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Joseph G. Hamilton — the physician who designed the plutonium injection protocol and personally administered several doses — dies of leukemia at age 49.</div>
+        <div class="tl-sub">His death was almost certainly caused by decades of unprotected radiation exposure from his own research. He had never disclosed to his subjects what he was injecting them with.</div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-year">1966</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Institutional Review Boards established — the first formal system requiring independent review of human subjects research in the United States.</div>
+      </div>
+    </div>
+
+    <div class="tl-item harm">
+      <div class="tl-year">1973–1975</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Follow-up studies are conducted on surviving plutonium injection subjects. Two are "deliberately not informed" of the study's purpose. One is "actually misled" about what is being done to them.</div>
+        <div class="tl-sub">The pattern of non-consent continues, 28 years after the original experiments. The 1953 Nuremberg Code adoption is finally declassified in 1975.</div>
+      </div>
+    </div>
+
+    <div class="tl-item expose">
+      <div class="tl-year">1976</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">First partial public disclosure by the Energy Research &amp; Development Administration. Covered briefly by the Washington Post and Science magazine. Largely ignored.</div>
+        <div class="tl-sub">The story surfaces and disappears. The names of the patients are not revealed.</div>
+      </div>
+    </div>
+
+    <div class="tl-item expose">
+      <div class="tl-year">1993</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">Investigative journalist Eileen Welsome publishes a Pulitzer Prize-winning series in the Albuquerque Tribune, exposing the human plutonium trials in full. Secretary of Energy Hazel O'Leary orders complete declassification of government radiation experiment files.</div>
+        <div class="tl-sub">Her subsequent book, <em>The Plutonium Files</em>, becomes the definitive account of the program.</div>
+      </div>
+    </div>
+
+    <div class="tl-item justice">
+      <div class="tl-year">1994–1995</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">President Clinton forms the Advisory Committee on Human Radiation Experiments (ACHRE). The committee investigates nearly 4,000 federally-sponsored radiation experiments involving tens of thousands of patients.</div>
+        <div class="tl-sub">Clinton issues a formal presidential apology. The ACHRE final report concludes the experiments violated ethical standards that were understood — and actively suppressed — at the time.</div>
+      </div>
+    </div>
+
+    <div class="tl-item unknown">
+      <div class="tl-year">Today</div>
+      <div class="tl-node"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <div class="tl-text">The identities of CHI-1, CHI-2, and CHI-3 remain publicly unknown. Sparse original records, lost hospital files, HIPAA protections, and the inability to locate surviving families have prevented identification.</div>
+        <div class="tl-sub">In a country that has formally apologized for what was done to them, we do not know who we are apologizing to.</div>
+      </div>
+    </div>
+
+  </div><!-- /tl-list -->
+</div><!-- /tl-list-section -->
+
+<!-- ═══════════════════════════════════════
+     EPILOGUE — STATEMENT SIDESCROLL
+════════════════════════════════════════ -->
+<div class="chapter-wrap">
+  <div class="chapter-body">
+    <div class="eyebrow reveal">Epilogue</div>
+    <h2 class="reveal">What Remains Unsaid</h2>
+    <p class="reveal reveal-d1">In January 1994 — one month after Secretary of Energy Hazel O'Leary ordered the declassification of Manhattan Project human experiment records — the University of Chicago released the conservatively titled "Statement on Plutonium Experiments." It was the institution's first public acknowledgment of the research. No press conference accompanied it. No spokesperson took questions. The statement was released in response to congressional inquiry, not institutional initiative. What follows are the final two lines: and a brief analysis of what they do and do not say.</p>
+  </div>
+</div>
+
+
+<section class="epilogue-scroll-outer" id="epilogue">
+  <div class="epilogue-scroll-sticky">
+
+    <div class="ucs-track-wrap">
+      <div class="ucs-track" id="ucs-track">
+
+        <!-- 0: intro — full statement, all dim -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">Excerpt - Statement on Plutonium Experiments</div>
+          <div class="ucs-statement">
+            "A follow-up study found no evidence that the plutonium injections affected the health of the subjects or their pre-existing illnesses.<br><br>
+            Research standards have changed drastically since 1945. Today, no research is or can be performed on any patients without their full knowledge and informed, written consent."
+          </div>
+          <div class="ucs-callout" style="border-color:var(--border);">
+            Released in response to the ACHRE investigation. No admission of wrongdoing accompanied the statement.
+          </div>
+          <p class="ucs-nav-hint">Navigate by scrolling or using the arrow keys</p>
+        </div>
+
+        <!-- 1: "A follow-up study" -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">Reading the Statement</div>
+          <div class="ucs-statement">
+            "<span class="ucs-hi">A follow-up study</span> found no evidence that the plutonium injections affected the health of the subjects or their pre-existing illnesses.<br><br>
+            Research standards have changed drastically since 1945. Today, no research is or can be performed on any patients without their full knowledge and informed, written consent."
+          </div>
+          <div class="ucs-callout">
+            The 1980 Health Physics review, led by Robert Rowland, tracked urine samples and tissue specimens from Manhattan Project subjects who could still be located. It became the university's primary evidentiary defense.
+          </div>
+        </div>
+
+        <!-- 2: "found no evidence" -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">Reading the Statement</div>
+          <div class="ucs-statement">
+            "A follow-up study <span class="ucs-hi">found no evidence</span> that the plutonium injections affected the health of the subjects or their pre-existing illnesses.<br><br>
+            Research standards have changed drastically since 1945. Today, no research is or can be performed on any patients without their full knowledge and informed, written consent."
+          </div>
+          <div class="ucs-callout">
+            The follow-up study tracked twelve patients, but we know of at least eighteen that were injected. These missing six are not mentioned at all: in the paper, or in the university's statement.
+          </div>
+        </div>
+
+        <!-- 3: "the subjects" -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">Reading the Statement</div>
+          <div class="ucs-statement">
+            "A follow-up study found no evidence that the plutonium injections affected the health of <span class="ucs-hi">the subjects</span> or their pre-existing illnesses.<br><br>
+            Research standards have changed drastically since 1945. Today, no research is or can be performed on any patients without their full knowledge and informed, written consent."
+          </div>
+          <div class="ucs-callout">
+            CHI-1 and CHI-2 died within months of injection. CHI-3 — who received a dose nearly a thousand times the accepted safe limit — disappeared from the record entirely. The follow-up study examined the subjects it could examine, and said nothing about the one it could not.
+          </div>
+        </div>
+
+        <!-- 4: "Research standards have changed drastically since 1945" -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">Reading the Statement</div>
+          <div class="ucs-statement">
+            "A follow-up study found no evidence that the plutonium injections affected the health of the subjects or their pre-existing illnesses.<br><br>
+            <span class="ucs-hi">Research standards have changed drastically since 1945.</span> Today, no research is or can be performed on any patients without their full knowledge and informed, written consent."
+          </div>
+          <div class="ucs-callout">
+            The Advisory Committee on Human Radiation Experiments concluded the injections violated the ethical standards of 1945 — not just today's. Even UCSF's statement conceded that the experiments were unacceptable.
+          </div>
+        </div>
+
+        <!-- 5: "full knowledge and informed, written consent" -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">Reading the Statement</div>
+          <div class="ucs-statement">
+            "A follow-up study found no evidence that the plutonium injections affected the health of the subjects or their pre-existing illnesses.<br><br>
+            Research standards have changed drastically since 1945. Today, no research is or can be performed on any patients without their <span class="ucs-hi">full knowledge and informed, written consent.</span>"
+          </div>
+          <div class="ucs-callout">
+            No patient was told they were receiving plutonium. No consent form exists for any of the three injections that happened at Chicago. UChicago's statement describes a century-old medical standard, but declines to explictly acknowledge that it was not met.
+          </div>
+        </div>
+
+        <!-- 6: close -->
+        <div class="ucs-panel">
+          <div class="ucs-panel-label">January 1994 &nbsp;·&nbsp; No Further Statement</div>
+          <div class="ucs-statement">
+            "A follow-up study found no evidence that the plutonium injections affected the health of the subjects or their pre-existing illnesses.<br><br>
+            Research standards have changed drastically since 1945. Today, no research is or can be performed on any patients without their full knowledge and informed, written consent."
+          </div>
+          <div class="ucs-close-text">
+            No admission of wrongdoing.<br>
+            No public apology to the families.<br>
+            <strong>CHI-3 remains unknown.</strong><br>
+          </div>
+        </div>
+
+      </div><!-- /ucs-track -->
+    </div><!-- /ucs-track-wrap -->
+
+    <div class="ucs-nav" id="ucs-nav">
+      <div class="ucs-nav-dot active"></div>
+      <div class="ucs-nav-dot"></div>
+      <div class="ucs-nav-dot"></div>
+      <div class="ucs-nav-dot"></div>
+      <div class="ucs-nav-dot"></div>
+      <div class="ucs-nav-dot"></div>
+      <div class="ucs-nav-dot"></div>
+    </div>
+
+  </div><!-- /epilogue-scroll-sticky -->
+</section>
+
+<div class="chapter-wrap">
+  <div class="chapter-body">
+
+    <p class="reveal">
+
+      The University of Chicago is not the only institution with a history of unethical experimentation. Vanderbilt irradiated pregnant women with iron radioisotopes. MIT researchers fed children with developmental disabilities oatmeal and milk enriched with radioactive iron and calcium. Unlike UChicago, both institutions have since apologized. <br>
+    </p>
+
+
+    <p class="reveal">
+       More saliently, Vanderbilt is not where plutonium was first isolated, as the plaques in the lobby of the Jones Chemical Laboratory are happy to remind you. MIT is not the parent institution of Argonne National Laboratory. UChicago is the only university where touring prospies are shepherded to the site of the world's first nuclear reactor, invited to take photos of the statue commemorating the event. It is unabashedly proud of its role in the history of nuclear research, moreso, perhaps, than any other university (any university except Berkeley, at least). Is it permissible that it obscures its role in the more sordid parts of that history? <br>
+     </p>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER / SOURCES
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="eyebrow">Sources</div>
+    <div class="sources-list">
+      <div class="source"><a href="https://ehss.energy.gov/ohre/roadmap/achre/chap5_1.html">Advisory Committee on Human Radiation Experiments — Chapter 5, Part 1: The Plutonium Injection Experiments (1995)</a></div>
+      <div class="source"><a href="https://ehss.energy.gov/ohre/roadmap/achre/chap5_2.html">Advisory Committee on Human Radiation Experiments — Chapter 5, Part 2 (1995)</a></div>
+      <div class="source"><a href="https://ehss.energy.gov/ohre/roadmap/achre/summary.html">ACHRE Final Report — Summary and Conclusions (1995)</a></div>
+      <div class="source"><a href="http://chronicle.uchicago.edu/940106/plutonium.shtml">University of Chicago Chronicle — "Plutonium Experiments" (January 1994)</a></div>
+      <div class="source"><a href="https://www.psu.edu/news/research/story/subjected-science">Penn State News — "Subjected to Science" (Penn State Hershey Medical Center / ACHRE context)</a></div>
+      <div class="source"><a href="https://www.energy.gov/lm/metallurgical-laboratory-university-chicago">U.S. Department of Energy — Metallurgical Laboratory, University of Chicago</a></div>
+      <div class="source">Welsome, Eileen. <em>The Plutonium Files: America's Secret Medical Experiments in the Cold War.</em> Dial Press, 1999.</div>
+      <div class="source">Health Physics Journal, Vol. 38, June 1980 — Follow-up study on plutonium injection subjects.</div>
+      <div class="source"><a href="https://permalink.lanl.gov/object/tr?what=info:lanl-repo/lareport/LA-UR-95-4005-18">Los Alamos National Laboratory — LA-UR-95-4005-18: Review of Los Alamos Human Radiation Experiments (1995)</a></div>
+      <div class="source"><a href="https://groverlab.org/assets/all-the-easy-experiments.pdf">Grover Lab — "All the Easy Experiments Have Been Done" (PDF)</a></div>
+      <div class="source"><a href="https://www.nytimes.com/1993/12/28/us/1950-note-warns-about-radiation-test.html">New York Times — "1950 Note Warns About Radiation Test" (December 28, 1993)</a></div>
+      <div class="source"><a href="https://pubmed.ncbi.nlm.nih.gov/15751149/">PubMed — NCBI: Related biomedical literature (PMID 15751149)</a></div>
+      <div class="source"><a href="https://news.mit.edu/1994/concern-0112">MIT News — "Institute Expresses Concern Over Radiation Experiments" (January 1994)</a></div>
+      <div class="source"><a href="https://www.osti.gov/servlets/purl/6977818">U.S. Department of Energy / OSTI — Declassified Document 6977818</a></div>
+    </div>
+    <div class="footer-stamp"></div>
+  </div>
+</footer>
+
+<script>
+// ── PROGRESS BAR ──────────────────────────────────
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+  prog.style.width = pct + '%';
+});
+
+// ── GENERIC REVEAL ────────────────────────────────
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── PATIENT CARDS ─────────────────────────────────
+const cardObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.patient-card').forEach(c => c.classList.add('visible'));
+    }
+  });
+}, { threshold: 0.1 });
+const cs = document.getElementById('cards-section');
+if (cs) cardObs.observe(cs);
+
+// ── CONSENT DOTS ──────────────────────────────────
+(function() {
+  const g = document.getElementById('consent-dots');
+  if (!g) return;
+  for (let i = 0; i < 18; i++) {
+    const d = document.createElement('div');
+    d.className = 'cdot ' + (i < 17 ? 'no' : 'yes');
+    d.title = i < 17
+      ? 'No record of consent'
+      : 'Disputed written notation (Elmer Allen, July 1947) — fails AEC\'s own 1947 standard';
+    g.appendChild(d);
+  }
+})();
+
+// ── DOT MATRIX VIZ ───────────────────────────────
+// Each dot = 0.1 μg. Total dots = 950 (= 95 μg, the CHI-2/3 dose).
+// Step 1: safe limit  → 1 green dot
+// Step 2: CHI-1 dose  → 65 dots (1 green + 64 orange)
+// Step 3: CHI-2/3 dose → all 950 flood red, green dot still visible at start
+const TOTAL = 950;
+const dotField = document.getElementById('dot-field');
+const dots = [];
+
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  dotField.appendChild(d);
+  dots.push(d);
+}
+
+const dvLabel   = document.getElementById('dv-label');
+const dvValue   = document.getElementById('dv-value');
+const dvMult    = document.getElementById('dv-mult');
+const dvMultN   = document.getElementById('dv-mult-n');
+const dvMultLbl = document.getElementById('dv-mult-label');
+
+let floodTimer = null;
+let currentDotStep = 0;
+
+function resetDots() {
+  if (floodTimer) { clearInterval(floodTimer); floodTimer = null; }
+  dots.forEach(d => { d.className = 'dot'; });
+}
+
+function floodAll(animate) {
+  dots[0].className = 'dot d-safe';
+  if (!animate) {
+    for (let i = 1; i < TOTAL; i++) dots[i].className = 'dot d-danger';
+    return;
+  }
+  // seed CHI-1 state first, then flood the rest
+  for (let i = 1; i < 65; i++) dots[i].className = 'dot d-warn';
+  let i = 65;
+  floodTimer = setInterval(() => {
+    const end = Math.min(i + 12, TOTAL);
+    for (; i < end; i++) dots[i].className = 'dot d-danger';
+    if (i >= 100) for (let j = 1; j < 65; j++) dots[j].className = 'dot d-danger';
+    if (i >= TOTAL) { clearInterval(floodTimer); floodTimer = null; }
+  }, 25);
+}
+
+function setDotStep(n) {
+  if (n === currentDotStep) return;
+  const prev = currentDotStep;
+  currentDotStep = n;
+
+  // steps 3 and 4 share the same full-flood state — don't reset between them
+  const stayFull = (prev === 3 && n === 4) || (prev === 4 && n === 3);
+  if (!stayFull) resetDots();
+
+  if (n === 1) {
+    dvLabel.textContent = 'Final safe limit — 1949 standard';
+    dvValue.textContent = '0.1 μg';
+    dvMult.style.opacity = '0';
+    dots[0].className = 'dot d-safe';
+
+  } else if (n === 2) {
+    dvLabel.textContent = 'CHI-1 dose — April 1945';
+    dvValue.textContent = '6.5 μg';
+    dvMultN.textContent = '65×';
+    dvMultN.style.color = 'var(--warn)';
+    dvMultLbl.textContent = 'the safe limit';
+    dvMult.style.opacity = '1';
+    dots[0].className = 'dot d-safe';
+    let wi = 1;
+    floodTimer = setInterval(() => {
+      const end = Math.min(wi + 12, 65);
+      for (; wi < end; wi++) dots[wi].className = 'dot d-warn';
+      if (wi >= 65) { clearInterval(floodTimer); floodTimer = null; }
+    }, 25);
+
+  } else if (n === 3) {
+    dvLabel.textContent = 'CHI-2 & CHI-3 dose — December 1945';
+    dvValue.textContent = '~95 μg';
+    dvMultN.textContent = '950×';
+    dvMultN.style.color = 'var(--danger)';
+    dvMultLbl.textContent = 'the safe limit — each patient';
+    dvMult.style.opacity = '1';
+    // animate the flood only when arriving forward; instant if returning
+    floodAll(!stayFull);
+
+  } else if (n === 4) {
+    dvLabel.textContent = 'CHI-2 & CHI-3 dose — December 1945';
+    dvValue.textContent = '~95 μg · 950 dots';
+    dvMultN.textContent = '950×';
+    dvMultN.style.color = 'var(--danger)';
+    dvMultLbl.textContent = 'the safe limit — each patient';
+    dvMult.style.opacity = '1';
+    // if arriving here without passing step 3, show the full flood instantly
+    if (!stayFull) floodAll(false);
+  }
+}
+
+// scrolly steps
+const steps = document.querySelectorAll('.scrolly-step');
+
+function activateStep(n) {
+  steps.forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === n));
+  setDotStep(n);
+}
+
+const stepObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) activateStep(parseInt(e.target.dataset.step));
+  });
+}, { threshold: 0.5, rootMargin: '-5% 0px -5% 0px' });
+steps.forEach(s => stepObs.observe(s));
+
+// init
+if (steps.length) activateStep(1);
+
+// ── H2 COUNTER ANIMATION ──────────────────────────
+(function() {
+  const counter = document.getElementById('h2-counter');
+  if (!counter) return;
+  let fired = false;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !fired) {
+        fired = true;
+        obs.disconnect();
+        counter.textContent = '0';
+        counter.classList.add('counting');
+        let v = 0;
+        const interval = setInterval(() => {
+          v++;
+          counter.textContent = v;
+          if (v === 46) counter.classList.remove('counting');
+          if (v >= 48) clearInterval(interval);
+        }, 42);
+      }
+    });
+  }, { threshold: 0.8 });
+  obs.observe(counter);
+})();
+
+// ── TIMELINE ITEM REVEAL ──────────────────────────
+(function() {
+  const items = document.querySelectorAll('.tl-item');
+  if (!items.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  items.forEach(el => obs.observe(el));
+})();
+
+// ── SITE FILE EXPLORER ────────────────────────────
+(function() {
+  const tabs    = Array.from(document.querySelectorAll('.folder-tab'));
+  const cards   = Array.from(document.querySelectorAll('.site-card'));
+  const dotsEl  = document.getElementById('deck-dots');
+  const prevBtn = document.getElementById('deck-prev');
+  const nextBtn = document.getElementById('deck-next');
+  const labelEl = document.getElementById('deck-label');
+  const ctrEl   = document.getElementById('deck-counter');
+  const container = document.getElementById('deck-cards');
+  if (!tabs.length || !cards.length || !container) return;
+
+  let activeSite = 'or', idx = 0;
+
+  const siteLabels = {
+    or:   'Oak Ridge Hospital · Tennessee',
+    ucsf: 'University of California, San Francisco',
+    roch: 'Strong Memorial Hospital · Rochester'
+  };
+
+  function siteCards() { return cards.filter(c => c.dataset.site === activeSite); }
+
+  function render(animate) {
+    const sc = siteCards();
+    // Swap active card
+    cards.forEach(c => {
+      c.classList.remove('active');
+      c.style.position = 'absolute';
+    });
+    const active = sc[idx];
+    active.style.position = 'relative';
+    active.classList.add('active');
+
+    // Sync container height to active card
+    container.style.minHeight = active.scrollHeight + 'px';
+
+    // Header
+    labelEl.textContent = siteLabels[activeSite];
+    ctrEl.textContent   = (idx + 1) + ' / ' + sc.length;
+
+    // Dots
+    dotsEl.innerHTML = '';
+    sc.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'deck-dot' + (i === idx ? ' active' : '');
+      d.setAttribute('aria-label', 'Card ' + (i + 1));
+      d.addEventListener('click', () => { idx = i; render(true); });
+      dotsEl.appendChild(d);
+    });
+
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx >= sc.length - 1;
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      activeSite = tab.dataset.site;
+      idx = 0;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      render(true);
+    });
+  });
+
+  prevBtn.addEventListener('click', () => { if (idx > 0)              { idx--; render(true); } });
+  nextBtn.addEventListener('click', () => { if (idx < siteCards().length - 1) { idx++; render(true); } });
+
+  render(false);
+})();
+
+// ── BREACH ITEMS ──────────────────────────────────
+const breachObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.3 });
+document.querySelectorAll('.breach-item').forEach(el => breachObs.observe(el));
+
+
+// ── BILLINGS MAP SCROLL ───────────────────────────
+(function() {
+  const mapPanel = document.getElementById('billings-map-panel');
+  const steps = document.querySelectorAll('.billings-step');
+  if (!mapPanel || !steps.length) return;
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const step = parseInt(e.target.dataset.bstep);
+      steps.forEach((s, i) => s.classList.toggle('active', i + 1 === step));
+      mapPanel.classList.toggle('exit', step === 5);
+    });
+  }, { threshold: 0.5, rootMargin: '-15% 0px -15% 0px' });
+
+  steps.forEach(s => obs.observe(s));
+})();
+
+// ── EPILOGUE STATEMENT SIDESCROLL ─────────────────
+(function() {
+  const outer = document.getElementById('epilogue');
+  if (!outer) return;
+  const track = document.getElementById('ucs-track');
+  const navDots = document.querySelectorAll('.ucs-nav-dot');
+  const numPanels = 7;
+  let currentIdx = -1;
+
+  function scrollable() {
+    return outer.offsetHeight - window.innerHeight;
+  }
+
+  function outerTop() {
+    return outer.getBoundingClientRect().top + window.scrollY;
+  }
+
+  function scrollToPanel(idx) {
+    idx = Math.max(0, Math.min(numPanels - 1, idx));
+    const s = scrollable();
+    const targetY = outerTop() + s * (idx + 0.5) / numPanels;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  }
+
+  function isActive() {
+    const rect = outer.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
+  }
+
+  function update() {
+    const rect = outer.getBoundingClientRect();
+    const s = scrollable();
+    if (s <= 0) return;
+    const progress = Math.max(0, Math.min(1, -rect.top / s));
+    const idx = Math.min(numPanels - 1, Math.floor(progress * numPanels));
+    if (idx === currentIdx) return;
+    currentIdx = idx;
+    track.style.transform = `translateX(-${idx * 100}vw)`;
+    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+
+  window.addEventListener('keydown', (e) => {
+    if (!isActive()) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      scrollToPanel(currentIdx + 1);
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      scrollToPanel(currentIdx - 1);
+    }
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>
